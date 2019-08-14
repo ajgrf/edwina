@@ -6,10 +6,13 @@
 
 (require 'seq)
 
-(defvar edwin-layout 'edwin-stack-layout
+(defvar edwin-layout 'edwin-tall-layout
   "The current Edwin layout.
 A layout is a function that takes a list of buffers, and arranges them into
 a window configuration.")
+
+(defvar edwin-nmaster 1
+  "The number of windows to put in the Edwin master area.")
 
 (defun edwin-arrange ()
   "Arrange windows according to Edwin's current layout."
@@ -35,6 +38,22 @@ a window configuration.")
   (delete-window)
   (balance-windows (window-parent)))
 
+(defun edwin-add-master-left (layout)
+  "Add a master area to the left of LAYOUT."
+  (lambda (buffers)
+    (let ((master (seq-take buffers edwin-nmaster))
+          (stack (seq-drop buffers edwin-nmaster)))
+      (when master
+        (edwin-stack-layout master)
+        (split-window (frame-root-window) nil t)
+        (edwin-select-next-window))
+      (funcall layout stack))))
+
+(defun edwin-tall-layout (buffers)
+  "Edwin layout with master and stack areas for BUFFERS."
+  (let ((layout (edwin-add-master-left #'edwin-stack-layout)))
+    (funcall layout buffers)))
+
 (defun edwin-select-next-window ()
   "Move cursor to the next window in cyclic order."
   (interactive)
@@ -57,6 +76,20 @@ a window configuration.")
   (window-swap-states (selected-window)
                       (previous-window)))
 
+(defun edwin-inc-nmaster ()
+  "Increase the number of windows in the master area."
+  (interactive)
+  (setq edwin-nmaster (+ edwin-nmaster 1))
+  (edwin-arrange))
+
+(defun edwin-dec-nmaster ()
+  "Decrease the number of windows in the master area."
+  (interactive)
+  (setq edwin-nmaster (- edwin-nmaster 1))
+  (when (< edwin-nmaster 0)
+    (setq edwin-nmaster 0))
+  (edwin-arrange))
+
 (defvar edwin-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "M-r") 'edwin-arrange)
@@ -64,6 +97,8 @@ a window configuration.")
     (define-key map (kbd "M-k") 'edwin-select-previous-window)
     (define-key map (kbd "M-J") 'edwin-swap-next-window)
     (define-key map (kbd "M-K") 'edwin-swap-previous-window)
+    (define-key map (kbd "M-i") 'edwin-inc-nmaster)
+    (define-key map (kbd "M-d") 'edwin-dec-nmaster)
     map)
   "Keymap for edwin-mode.")
 
