@@ -4,6 +4,8 @@
 
 ;;; Code:
 
+(require 'seq)
+
 (defvar edwin-layout 'edwin-stack-layout
   "The current Edwin layout.
 A layout is a function that takes a list of buffers, and arranges them into
@@ -12,12 +14,17 @@ a window configuration.")
 (defun edwin-arrange ()
   "Arrange windows according to Edwin's current layout."
   (interactive)
-  (let* ((master (frame-first-window))
-         (windows (window-list nil nil master))
+  (let* ((windows (edwin-window-list))
+         (selected-window-index (seq-position windows (selected-window)))
          (buffers (mapcar #'window-buffer windows)))
-    (select-window master)
     (delete-other-windows)
-    (funcall edwin-layout buffers)))
+    (funcall edwin-layout buffers)
+    (select-window (nth selected-window-index
+                        (edwin-window-list)))))
+
+(defun edwin-window-list (&optional frame)
+  "Return a list of windows on FRAME in layout order."
+  (window-list frame nil (frame-first-window frame)))
 
 (defun edwin-stack-layout (buffers)
   "Edwin layout that stacks BUFFERS evenly on top of each other."
