@@ -14,6 +14,9 @@ a window configuration.")
 (defvar edwin-nmaster 1
   "The number of windows to put in the Edwin master area.")
 
+(defvar edwin-mfact 0.55
+  "The size of the master area in proportion to the stack area.")
+
 (defun edwin-arrange ()
   "Arrange windows according to Edwin's current layout."
   (interactive)
@@ -45,7 +48,9 @@ a window configuration.")
           (stack (seq-drop buffers edwin-nmaster)))
       (when master
         (edwin-stack-layout master)
-        (split-window (frame-root-window) nil t)
+        (split-window (frame-root-window)
+                      (ceiling (* edwin-mfact (frame-width)))
+                      'right)
         (edwin-select-next-window))
       (funcall layout stack))))
 
@@ -90,6 +95,22 @@ a window configuration.")
     (setq edwin-nmaster 0))
   (edwin-arrange))
 
+(defun edwin-inc-mfact ()
+  "Increase the size of the master area."
+  (interactive)
+  (setq edwin-mfact (+ edwin-mfact 0.05))
+  (when (> edwin-mfact 0.95)
+    (setq edwin-mfact 0.95))
+  (edwin-arrange))
+
+(defun edwin-dec-mfact ()
+  "Decrease the size of the master area."
+  (interactive)
+  (setq edwin-mfact (- edwin-mfact 0.05))
+  (when (< edwin-mfact 0.05)
+    (setq edwin-mfact 0.05))
+  (edwin-arrange))
+
 (defvar edwin-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "M-r") 'edwin-arrange)
@@ -99,6 +120,8 @@ a window configuration.")
     (define-key map (kbd "M-K") 'edwin-swap-previous-window)
     (define-key map (kbd "M-i") 'edwin-inc-nmaster)
     (define-key map (kbd "M-d") 'edwin-dec-nmaster)
+    (define-key map (kbd "M-h") 'edwin-dec-mfact)
+    (define-key map (kbd "M-l") 'edwin-inc-mfact)
     map)
   "Keymap for edwin-mode.")
 
