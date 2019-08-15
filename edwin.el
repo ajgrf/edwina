@@ -53,8 +53,13 @@ a window configuration.")
     (switch-to-buffer buffer)
     (split-window)
     (edwin-select-next-window))
-  (delete-window)
-  (balance-windows (window-parent)))
+  (let ((p (window-parent)))
+    (delete-window)
+    ;; balance-windows raises an error if the parent does not have
+    ;; any further children (then rebalancing is not necessary anyway)
+    (condition-case nil
+        (balance-windows p)
+      (error))))
 
 (defun edwin-add-master-left (layout)
   "Add a master area to the left of LAYOUT."
