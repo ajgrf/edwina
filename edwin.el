@@ -46,13 +46,13 @@ a window configuration.")
   (lambda (buffers)
     (let ((master (seq-take buffers edwin-nmaster))
           (stack (seq-drop buffers edwin-nmaster)))
+      (funcall layout stack)
       (when master
-        (edwin-stack-layout master)
-        (split-window (frame-root-window)
-                      (ceiling (* edwin-mfact (frame-width)))
-                      'right)
-        (edwin-select-next-window))
-      (funcall layout stack))))
+        (select-window
+         (split-window (frame-root-window)
+                       (ceiling (* -1 edwin-mfact (frame-width)))
+                       'left))
+        (edwin-stack-layout master)))))
 
 (defun edwin-tall-layout (buffers)
   "Edwin layout with master and stack areas for BUFFERS."
