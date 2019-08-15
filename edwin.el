@@ -57,24 +57,30 @@ a window configuration.")
        (split-window nil split-height 'below))
       (switch-to-buffer buffer))))
 
-(defun edwin-add-master-left (layout)
-  "Add a master area to the left of LAYOUT."
+(defun edwin-mastered (side layout)
+  "Add a master area to LAYOUT.
+SIDE has the same meaning as in `split-window', but putting master to the
+right or bottom is not supported."
   (lambda (buffers)
     (let ((master (seq-take buffers edwin-nmaster))
-          (stack  (seq-drop buffers edwin-nmaster)))
+          (stack  (seq-drop buffers edwin-nmaster))
+          (msize  (ceiling (* -1
+                              edwin-mfact
+                              (if (memq side '(left right t))
+                                  (frame-width)
+                                (frame-height))))))
       (when stack
         (funcall layout stack))
       (when master
         (when stack
           (select-window
-           (split-window (frame-root-window)
-                         (ceiling (* -1 edwin-mfact (frame-width)))
-                         'left)))
+           (split-window (frame-root-window) msize side)))
         (edwin-stack-layout master)))))
 
 (defun edwin-tall-layout (buffers)
   "Edwin layout with master and stack areas for BUFFERS."
-  (let ((layout (edwin-add-master-left #'edwin-stack-layout)))
+  (let* ((side (if (< (frame-width) 132) 'above 'left))
+         (layout (edwin-mastered side #'edwin-stack-layout)))
     (funcall layout buffers)))
 
 (defun edwin-select-next-window ()
