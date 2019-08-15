@@ -61,13 +61,15 @@ a window configuration.")
   "Add a master area to the left of LAYOUT."
   (lambda (buffers)
     (let ((master (seq-take buffers edwin-nmaster))
-          (stack (seq-drop buffers edwin-nmaster)))
-      (funcall layout stack)
+          (stack  (seq-drop buffers edwin-nmaster)))
+      (when stack
+        (funcall layout stack))
       (when master
-        (select-window
-         (split-window (frame-root-window)
-                       (ceiling (* -1 edwin-mfact (frame-width)))
-                       'left))
+        (when stack
+          (select-window
+           (split-window (frame-root-window)
+                         (ceiling (* -1 edwin-mfact (frame-width)))
+                         'left)))
         (edwin-stack-layout master)))))
 
 (defun edwin-tall-layout (buffers)
