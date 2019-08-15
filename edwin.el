@@ -116,17 +116,15 @@ a window configuration.")
 (defun edwin-inc-mfact ()
   "Increase the size of the master area."
   (interactive)
-  (setq edwin-mfact (+ edwin-mfact 0.05))
-  (when (> edwin-mfact 0.95)
-    (setq edwin-mfact 0.95))
+  (setq edwin-mfact (min (+ edwin-mfact 0.05)
+                         0.95))
   (edwin-arrange))
 
 (defun edwin-dec-mfact ()
   "Decrease the size of the master area."
   (interactive)
-  (setq edwin-mfact (- edwin-mfact 0.05))
-  (when (< edwin-mfact 0.05)
-    (setq edwin-mfact 0.05))
+  (setq edwin-mfact (max (- edwin-mfact 0.05)
+                         0.05))
   (edwin-arrange))
 
 (defvar edwin-mode-map
