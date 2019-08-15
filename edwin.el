@@ -49,17 +49,13 @@ a window configuration.")
 
 (defun edwin-stack-layout (buffers)
   "Edwin layout that stacks BUFFERS evenly on top of each other."
-  (dolist (buffer buffers)
-    (switch-to-buffer buffer)
-    (split-window)
-    (edwin-select-next-window))
-  (let ((p (window-parent)))
-    (delete-window)
-    ;; balance-windows raises an error if the parent does not have
-    ;; any further children (then rebalancing is not necessary anyway)
-    (condition-case nil
-        (balance-windows p)
-      (error))))
+  (let ((split-height (ceiling (/ (window-height)
+                                  (length buffers)))))
+    (switch-to-buffer (car buffers))
+    (dolist (buffer (cdr buffers))
+      (select-window
+       (split-window nil split-height 'below))
+      (switch-to-buffer buffer))))
 
 (defun edwin-add-master-left (layout)
   "Add a master area to the left of LAYOUT."
