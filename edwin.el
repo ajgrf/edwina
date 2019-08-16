@@ -43,6 +43,16 @@ a window configuration.")
     (select-window (nth selected-window-index
                         (edwin-window-list)))))
 
+(defun edwin-display-buffer (display-buffer &rest args)
+  "Apply DISPLAY-BUFFER to ARGS and arrange windows.
+Meant to be used as advice :around `display-buffer'."
+  (let* ((window (apply display-buffer args))
+         (windows (edwin-window-list))
+         (window-index (seq-position windows window)))
+    (edwin-arrange)
+    (nth window-index
+         (edwin-window-list))))
+
 (defun edwin-window-list (&optional frame)
   "Return a list of windows on FRAME in layout order."
   (window-list frame nil (frame-first-window frame)))
@@ -161,10 +171,13 @@ Edwin mode is a global minor mode that provides dwm-like dynamic
 window management for Emacs windows."
   :global t
   :lighter " edwin"
-  (when edwin-mode
-    (add-to-list 'emulation-mode-map-alists
-                 'edwin-mode-map-alist)
-    (edwin-arrange)))
+  (if edwin-mode
+      (progn
+        (add-to-list 'emulation-mode-map-alists
+                     'edwin-mode-map-alist)
+        (advice-add #'display-buffer :around #'edwin-display-buffer)
+        (edwin-arrange))
+    (advice-remove #'display-buffer #'edwin-display-buffer)))
 
 (provide 'edwin)
 ;;; edwin.el ends here
