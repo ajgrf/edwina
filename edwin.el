@@ -161,9 +161,10 @@ Edwin mode is a global minor mode that provides dwm-like dynamic
 window management for Emacs windows."
   :global t
   :lighter " edwin"
-  (add-to-list 'emulation-mode-map-alists
-               'edwin-mode-map-alist)
-  (edwin-arrange))
+  (when edwin-mode
+    (add-to-list 'emulation-mode-map-alists
+                 'edwin-mode-map-alist)
+    (edwin-arrange)))
 
 (provide 'edwin)
 ;;; edwin.el ends here
