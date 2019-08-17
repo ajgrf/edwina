@@ -37,7 +37,7 @@ a window configuration.")
   "List of window fields to save and restore.")
 
 (defvar edwin--window-params
-  '(quit-restore)
+  '(delete-window quit-restore)
   "List of window parameters to save and restore.")
 
 (defun edwin-pane (window)
@@ -61,7 +61,9 @@ a buffer and other information."
           (value  (alist-get field pane)))
       (funcall setter nil value)))
   (dolist (param edwin--window-params)
-    (set-window-parameter nil param (alist-get param pane))))
+    (set-window-parameter nil param (alist-get param pane)))
+  (unless (window-parameter nil 'delete-window)
+    (set-window-parameter nil 'delete-window #'edwin-delete-window)))
 
 (defun edwin-arrange ()
   "Arrange windows according to Edwin's current layout."
@@ -174,6 +176,13 @@ right or bottom is not supported."
                          0.05))
   (edwin-arrange))
 
+(defun edwin-delete-window (&optional window)
+  "Delete WINDOW."
+  (interactive)
+  (let ((ignore-window-parameters t))
+    (delete-window window)
+    (edwin-arrange)))
+
 (defvar edwin-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "M-r") 'edwin-arrange)
@@ -185,6 +194,7 @@ right or bottom is not supported."
     (define-key map (kbd "M-d") 'edwin-dec-nmaster)
     (define-key map (kbd "M-h") 'edwin-dec-mfact)
     (define-key map (kbd "M-l") 'edwin-inc-mfact)
+    (define-key map (kbd "M-C") 'edwin-delete-window)
     map)
   "Keymap for edwin-mode.")
 
