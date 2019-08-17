@@ -77,14 +77,13 @@ a buffer and other information."
   (unless (window-parameter nil 'delete-window)
     (set-window-parameter nil 'delete-window #'edwin-delete-window)))
 
-(defun edwin-pane-list ()
-  "Return the current list of panes."
-  (mapcar #'edwin-pane
-          (window-list nil nil (frame-first-window))))
-
 (defun edwin--window-list (&optional frame)
   "Return a list of windows on FRAME in layout order."
   (window-list frame nil (frame-first-window frame)))
+
+(defun edwin-pane-list (&optional frame)
+  "Return the current list of panes on FRAME in layout order."
+  (mapcar #'edwin-pane (edwin--window-list frame)))
 
 (defmacro edwin--respective-window (window &rest body)
   "Execute Edwin manipulations in BODY and return the respective WINDOW."
