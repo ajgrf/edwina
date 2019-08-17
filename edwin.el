@@ -74,26 +74,29 @@ a buffer and other information."
   "Return a list of windows on FRAME in layout order."
   (window-list frame nil (frame-first-window frame)))
 
+(defun edwin--respective-window (window f)
+  "Execute Edwin manipulations in F and return the respective WINDOW."
+  (let* ((windows (edwin--window-list))
+         (index (seq-position windows window)))
+    (funcall f)
+    (nth index (edwin--window-list))))
+
 (defun edwin-arrange (&optional panes)
   "Arrange PANES according to Edwin's current layout."
   (interactive)
-  (let* ((windows (edwin--window-list))
-         (selected-window-index (seq-position windows (selected-window)))
-         (panes (or panes (mapcar #'edwin-pane windows))))
-    (delete-other-windows)
-    (funcall edwin-layout panes)
-    (select-window (nth selected-window-index
-                        (edwin--window-list)))))
+  (let* ((panes (or panes (edwin-pane-list)))
+         (arrange (lambda ()
+                    (delete-other-windows)
+                    (funcall edwin-layout panes))))
+    (select-window
+     (edwin--respective-window (selected-window)
+                               arrange))))
 
 (defun edwin--display-buffer (display-buffer &rest args)
   "Apply DISPLAY-BUFFER to ARGS and arrange windows.
 Meant to be used as advice :around `display-buffer'."
-  (let* ((window (apply display-buffer args))
-         (windows (edwin--window-list))
-         (window-index (seq-position windows window)))
-    (edwin-arrange)
-    (nth window-index
-         (edwin--window-list))))
+  (edwin--respective-window (apply display-buffer args)
+                            #'edwin-arrange))
 
 (defun edwin-stack-layout (panes)
   "Edwin layout that stacks PANES evenly on top of each other."
