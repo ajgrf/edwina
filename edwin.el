@@ -139,9 +139,12 @@ right or bottom is not supported."
            (split-window (frame-root-window) msize side)))
         (edwin-stack-layout master)))))
 
+(defvar edwin-narrow-threshold 132
+  "Put master area on top if the frame is narrower than this.")
+
 (defun edwin-tall-layout (panes)
   "Edwin layout with master and stack areas for PANES."
-  (let* ((side (if (< (frame-width) 132) 'above 'left))
+  (let* ((side (if (< (frame-width) edwin-narrow-threshold) 'above 'left))
          (layout (edwin--mastered side #'edwin-stack-layout)))
     (funcall layout panes)))
 
