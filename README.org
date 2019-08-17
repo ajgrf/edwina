@@ -4,6 +4,12 @@ Edwin is a dynamic window manager for Emacs. It automatically arranges your
 Emacs panes (called "windows" in Emacs parlance) into predefined layouts,
 [[https://dwm.suckless.org/][dwm]]-style.
 
+* Status
+
+Edwin is new and experimental. While it works very well on the subset
+of Emacs that I use, you will definitely encounter bugs if you venture
+outside of that. Patches welcome!
+
 * Installation
 
 Copy or clone Edwin somewhere on your system:
@@ -72,7 +78,12 @@ master area on top:
 * Scope
 
 Edwin does not provide workspaces or window rules, instead delegating
-such functionality to other plugins and Emacs facilities. See for example
-[[https://github.com/wasamasa/eyebrowse][eyebrowse]],
-[[https://github.com/ema2159/centaur-tabs][Centaur Tabs]], or
-[[https://github.com/wasamasa/shackle][shackle]].
+such functionality to other plugins and Emacs facilities (like
+[[https://github.com/wasamasa/eyebrowse][eyebrowse]]).
+
+I recommend setting ~display-buffer~ to open a new window by default,
+then defining any exceptions in ~display-buffer-alist~.
+
+#+BEGIN_SRC emacs-lisp
+  (setq display-buffer-base-action '(display-buffer-below-selected))
+#+END_SRC
