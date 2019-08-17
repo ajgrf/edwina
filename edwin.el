@@ -44,7 +44,7 @@ a window configuration.")
   "The size of the master area in proportion to the stack area.")
 
 (defvar edwin--window-fields
-  '(buffer start hscroll point prev-buffers)
+  '(buffer start hscroll vscroll point prev-buffers)
   "List of window fields to save and restore.")
 
 (defvar edwin--window-params
