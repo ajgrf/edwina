@@ -32,18 +32,36 @@ a window configuration.")
 (defvar edwin-mfact 0.55
   "The size of the master area in proportion to the stack area.")
 
+(defvar edwin--window-fields
+  '(buffer start hscroll point prev-buffers)
+  "List of window fields to save and restore.")
+
+(defvar edwin--window-params
+  '(quit-restore)
+  "List of window parameters to save and restore.")
+
 (defun edwin-pane (window)
   "Create pane from WINDOW.
 A pane is Edwin's internal window abstraction, an association list containing
 a buffer and other information."
-  (let ((pane `((buffer . ,(window-buffer window))
-                (point . ,(window-point window)))))
+  (let ((pane '()))
+    (dolist (field edwin--window-fields)
+      (let* ((getter (intern (concat "window-" (symbol-name field))))
+             (value (funcall getter window)))
+        (push (cons field value) pane)))
+    (dolist (param edwin--window-params)
+      (let ((value (window-parameter window param)))
+        (push (cons param value) pane)))
     pane))
 
 (defun edwin-restore-pane (pane)
   "Restore PANE in the selected window."
-  (switch-to-buffer (alist-get 'buffer pane))
-  (set-window-point nil (alist-get 'point pane)))
+  (dolist (field edwin--window-fields)
+    (let ((setter (intern (concat "set-window-" (symbol-name field))))
+          (value  (alist-get field pane)))
+      (funcall setter nil value)))
+  (dolist (param edwin--window-params)
+    (set-window-parameter nil param (alist-get param pane))))
 
 (defun edwin-arrange ()
   "Arrange windows according to Edwin's current layout."
