@@ -167,10 +167,18 @@ right or bottom is not supported."
   (window-swap-states (selected-window)
                       (previous-window)))
 
-(defun edwin-inc-nmaster ()
-  "Increase the number of windows in the master area."
+(defun edwin-dec-mfact ()
+  "Decrease the size of the master area."
   (interactive)
-  (setq edwin-nmaster (+ edwin-nmaster 1))
+  (setq edwin-mfact (max (- edwin-mfact 0.05)
+                         0.05))
+  (edwin-arrange))
+
+(defun edwin-inc-mfact ()
+  "Increase the size of the master area."
+  (interactive)
+  (setq edwin-mfact (min (+ edwin-mfact 0.05)
+                         0.95))
   (edwin-arrange))
 
 (defun edwin-dec-nmaster ()
@@ -181,18 +189,10 @@ right or bottom is not supported."
     (setq edwin-nmaster 0))
   (edwin-arrange))
 
-(defun edwin-inc-mfact ()
-  "Increase the size of the master area."
+(defun edwin-inc-nmaster ()
+  "Increase the number of windows in the master area."
   (interactive)
-  (setq edwin-mfact (min (+ edwin-mfact 0.05)
-                         0.95))
-  (edwin-arrange))
-
-(defun edwin-dec-mfact ()
-  "Decrease the size of the master area."
-  (interactive)
-  (setq edwin-mfact (max (- edwin-mfact 0.05)
-                         0.05))
+  (setq edwin-nmaster (+ edwin-nmaster 1))
   (edwin-arrange))
 
 (defun edwin-delete-window (&optional window)
@@ -218,10 +218,10 @@ right or bottom is not supported."
     (define-key map (kbd "M-k") 'edwin-select-previous-window)
     (define-key map (kbd "M-J") 'edwin-swap-next-window)
     (define-key map (kbd "M-K") 'edwin-swap-previous-window)
-    (define-key map (kbd "M-i") 'edwin-inc-nmaster)
-    (define-key map (kbd "M-d") 'edwin-dec-nmaster)
     (define-key map (kbd "M-h") 'edwin-dec-mfact)
     (define-key map (kbd "M-l") 'edwin-inc-mfact)
+    (define-key map (kbd "M-d") 'edwin-dec-nmaster)
+    (define-key map (kbd "M-i") 'edwin-inc-nmaster)
     (define-key map (kbd "M-C") 'edwin-delete-window)
     (define-key map (kbd "M-<return>") 'edwin-zoom)
     map)
