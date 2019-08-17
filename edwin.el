@@ -1,6 +1,13 @@
 ;;; edwin --- Dynamic window manager for Emacs -*- lexical-binding: t -*-
 
+;; Author: Alex Griffin <a@ajgrf.com>
+;; URL: https://github.com/ajgrf/edwin
+;; Version: 0.1.0-pre
+
 ;;; Copyright © 2019 Alex Griffin <a@ajgrf.com>
+;;;
+;;;
+;;; This file is NOT part of GNU Emmacs.
 ;;;
 ;;; This program is free software: you can redistribute it and/or modify
 ;;; it under the terms of the GNU General Public License as published by
@@ -16,6 +23,10 @@
 ;;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ;;; Commentary:
+
+;; Edwin is a dynamic window manager for Emacs. It automatically arranges your
+;; Emacs panes (called "windows" in Emacs parlance) into predefined layouts,
+;; dwm-style.
 
 ;;; Code:
 
