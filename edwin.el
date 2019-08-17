@@ -2,7 +2,7 @@
 
 ;; Author: Alex Griffin <a@ajgrf.com>
 ;; URL: https://github.com/ajgrf/edwin
-;; Version: 0.1.0-pre
+;; Version: 0.1.0
 
 ;;; Copyright © 2019 Alex Griffin <a@ajgrf.com>
 ;;;
