@@ -52,21 +52,22 @@ master area on top:
 
 * Key Bindings
 
-|--------------+--------------------------------------|
-| Binding      | Action                               |
-|--------------+--------------------------------------|
-| =M-r=        | Arrange windows                      |
-| =M-j=        | Move to next window                  |
-| =M-k=        | Move to previous window              |
-| =M-S-j=      | Swap places with the next window     |
-| =M-S-k=      | Swap places with the previous window |
-| =M-h=        | Decrease the size of the master area |
-| =M-l=        | Increase the size of the master area |
-| =M-d=        | Decrease number of windows in master |
-| =M-i=        | Increase number of windows in master |
-| =M-S-c=      | Delete window                        |
-| =M-<return>= | Cycle window to/from master area     |
-|--------------+--------------------------------------|
+|----------------+--------------------------------------|
+| Binding        | Action                               |
+|----------------+--------------------------------------|
+| =M-r=          | Arrange windows                      |
+| =M-j=          | Move to next window                  |
+| =M-k=          | Move to previous window              |
+| =M-S-j=        | Swap places with the next window     |
+| =M-S-k=        | Swap places with the previous window |
+| =M-h=          | Decrease the size of the master area |
+| =M-l=          | Increase the size of the master area |
+| =M-d=          | Decrease number of windows in master |
+| =M-i=          | Increase number of windows in master |
+| =M-S-c=        | Delete window                        |
+| =M-<return>=   | Cycle window to/from master area     |
+| =M-S-<return>= | Clone current window                 |
+|----------------+--------------------------------------|
 
 * Scope
 

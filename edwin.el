@@ -198,6 +198,12 @@ right or bottom is not supported."
   (setq edwin-nmaster (+ edwin-nmaster 1))
   (edwin-arrange))
 
+(defun edwin-clone-window ()
+  "Clone selected window."
+  (interactive)
+  (split-window-below)
+  (edwin-arrange))
+
 (defun edwin-delete-window (&optional window)
   "Delete WINDOW."
   (interactive)
@@ -227,6 +233,7 @@ right or bottom is not supported."
     (define-key map (kbd "M-i") 'edwin-inc-nmaster)
     (define-key map (kbd "M-C") 'edwin-delete-window)
     (define-key map (kbd "M-<return>") 'edwin-zoom)
+    (define-key map (kbd "M-S-<return>") 'edwin-clone-window)
     map)
   "Keymap for command `edwin-mode'.")
 
