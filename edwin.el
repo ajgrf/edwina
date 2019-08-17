@@ -202,6 +202,17 @@ right or bottom is not supported."
   `((edwin-mode . ,edwin-mode-map))
   "Add to `emulation-mode-map-alists' to give bindings higher precedence.")
 
+(defun edwin--init ()
+  "Initialize `edwin-mode'."
+  (add-to-list 'emulation-mode-map-alists
+               'edwin-mode-map-alist)
+  (advice-add #'display-buffer :around #'edwin--display-buffer)
+  (edwin-arrange))
+
+(defun edwin--clean-up ()
+  "Clean up when disabling `edwin-mode'."
+  (advice-remove #'display-buffer #'edwin--display-buffer))
+
 (define-minor-mode edwin-mode
   "Toggle Edwin mode on or off.
 With a prefix argument ARG, enable Edwin mode if ARG is
@@ -213,12 +224,8 @@ window management for Emacs windows."
   :global t
   :lighter " edwin"
   (if edwin-mode
-      (progn
-        (add-to-list 'emulation-mode-map-alists
-                     'edwin-mode-map-alist)
-        (advice-add #'display-buffer :around #'edwin--display-buffer)
-        (edwin-arrange))
-    (advice-remove #'display-buffer #'edwin--display-buffer)))
+      (edwin--init)
+    (edwin--clean-up)))
 
 (provide 'edwin)
 ;;; edwin.el ends here
