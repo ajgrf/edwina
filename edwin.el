@@ -65,30 +65,30 @@ a buffer and other information."
   (unless (window-parameter nil 'delete-window)
     (set-window-parameter nil 'delete-window #'edwin-delete-window)))
 
+(defun edwin--window-list (&optional frame)
+  "Return a list of windows on FRAME in layout order."
+  (window-list frame nil (frame-first-window frame)))
+
 (defun edwin-arrange ()
   "Arrange windows according to Edwin's current layout."
   (interactive)
-  (let* ((windows (edwin-window-list))
+  (let* ((windows (edwin--window-list))
          (selected-window-index (seq-position windows (selected-window)))
          (panes (mapcar #'edwin-pane windows)))
     (delete-other-windows)
     (funcall edwin-layout panes)
     (select-window (nth selected-window-index
-                        (edwin-window-list)))))
+                        (edwin--window-list)))))
 
-(defun edwin-display-buffer (display-buffer &rest args)
+(defun edwin--display-buffer (display-buffer &rest args)
   "Apply DISPLAY-BUFFER to ARGS and arrange windows.
 Meant to be used as advice :around `display-buffer'."
   (let* ((window (apply display-buffer args))
-         (windows (edwin-window-list))
+         (windows (edwin--window-list))
          (window-index (seq-position windows window)))
     (edwin-arrange)
     (nth window-index
-         (edwin-window-list))))
-
-(defun edwin-window-list (&optional frame)
-  "Return a list of windows on FRAME in layout order."
-  (window-list frame nil (frame-first-window frame)))
+         (edwin--window-list))))
 
 (defun edwin-stack-layout (panes)
   "Edwin layout that stacks PANES evenly on top of each other."
@@ -100,7 +100,7 @@ Meant to be used as advice :around `display-buffer'."
        (split-window nil split-height 'below))
       (edwin-restore-pane pane))))
 
-(defun edwin-mastered (side layout)
+(defun edwin--mastered (side layout)
   "Add a master area to LAYOUT.
 SIDE has the same meaning as in `split-window', but putting master to the
 right or bottom is not supported."
@@ -123,7 +123,7 @@ right or bottom is not supported."
 (defun edwin-tall-layout (panes)
   "Edwin layout with master and stack areas for PANES."
   (let* ((side (if (< (frame-width) 132) 'above 'left))
-         (layout (edwin-mastered side #'edwin-stack-layout)))
+         (layout (edwin--mastered side #'edwin-stack-layout)))
     (funcall layout panes)))
 
 (defun edwin-select-next-window ()
@@ -216,9 +216,9 @@ window management for Emacs windows."
       (progn
         (add-to-list 'emulation-mode-map-alists
                      'edwin-mode-map-alist)
-        (advice-add #'display-buffer :around #'edwin-display-buffer)
+        (advice-add #'display-buffer :around #'edwin--display-buffer)
         (edwin-arrange))
-    (advice-remove #'display-buffer #'edwin-display-buffer)))
+    (advice-remove #'display-buffer #'edwin--display-buffer)))
 
 (provide 'edwin)
 ;;; edwin.el ends here
