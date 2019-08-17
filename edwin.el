@@ -65,16 +65,21 @@ a buffer and other information."
   (unless (window-parameter nil 'delete-window)
     (set-window-parameter nil 'delete-window #'edwin-delete-window)))
 
+(defun edwin-pane-list ()
+  "Return the current list of panes."
+  (mapcar #'edwin-pane
+          (window-list nil nil (frame-first-window))))
+
 (defun edwin--window-list (&optional frame)
   "Return a list of windows on FRAME in layout order."
   (window-list frame nil (frame-first-window frame)))
 
-(defun edwin-arrange ()
-  "Arrange windows according to Edwin's current layout."
+(defun edwin-arrange (&optional panes)
+  "Arrange PANES according to Edwin's current layout."
   (interactive)
   (let* ((windows (edwin--window-list))
          (selected-window-index (seq-position windows (selected-window)))
-         (panes (mapcar #'edwin-pane windows)))
+         (panes (or panes (mapcar #'edwin-pane windows))))
     (delete-other-windows)
     (funcall edwin-layout panes)
     (select-window (nth selected-window-index
@@ -183,6 +188,15 @@ right or bottom is not supported."
     (delete-window window)
     (edwin-arrange)))
 
+(defun edwin-zoom ()
+  "Zoom/cycle the selected window to/from master area."
+  (interactive)
+  (if (eq (selected-window) (frame-first-window))
+      (edwin-swap-next-window)
+    (let ((pane (edwin-pane (selected-window))))
+      (edwin-delete-window)
+      (edwin-arrange (cons pane (edwin-pane-list))))))
+
 (defvar edwin-mode-map
   (let ((map (make-sparse-keymap)))
     (define-key map (kbd "M-r") 'edwin-arrange)
@@ -195,6 +209,7 @@ right or bottom is not supported."
     (define-key map (kbd "M-h") 'edwin-dec-mfact)
     (define-key map (kbd "M-l") 'edwin-inc-mfact)
     (define-key map (kbd "M-C") 'edwin-delete-window)
+    (define-key map (kbd "M-<return>") 'edwin-zoom)
     map)
   "Keymap for edwin-mode.")
 
