@@ -1,8 +1,9 @@
-;;; edwin --- Dynamic window manager for Emacs -*- lexical-binding: t -*-
+;;; edwin.el --- Dynamic window manager -*- lexical-binding: t -*-
 
 ;; Author: Alex Griffin <a@ajgrf.com>
 ;; URL: https://github.com/ajgrf/edwin
-;; Version: 0.1.0
+;; Version: 0.1.1-pre
+;; Package-Requires: ((emacs "25"))
 
 ;;; Copyright © 2019 Alex Griffin <a@ajgrf.com>
 ;;;
@@ -228,23 +229,24 @@ right or bottom is not supported."
     (define-key map (kbd "M-C") 'edwin-delete-window)
     (define-key map (kbd "M-<return>") 'edwin-zoom)
     map)
-  "Keymap for edwin-mode.")
+  "Keymap for command `edwin-mode'.")
 
 (defvar edwin-mode-map-alist
   `((edwin-mode . ,edwin-mode-map))
   "Add to `emulation-mode-map-alists' to give bindings higher precedence.")
 
 (defun edwin--init ()
-  "Initialize `edwin-mode'."
+  "Initialize command `edwin-mode'."
   (add-to-list 'emulation-mode-map-alists
                'edwin-mode-map-alist)
   (advice-add #'display-buffer :around #'edwin--display-buffer)
   (edwin-arrange))
 
 (defun edwin--clean-up ()
-  "Clean up when disabling `edwin-mode'."
+  "Clean up when disabling command `edwin-mode'."
   (advice-remove #'display-buffer #'edwin--display-buffer))
 
+;;;###autoload
 (define-minor-mode edwin-mode
   "Toggle Edwin mode on or off.
 With a prefix argument ARG, enable Edwin mode if ARG is
