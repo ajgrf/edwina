@@ -23,7 +23,7 @@
 
 (defvar edwin-layout 'edwin-tall-layout
   "The current Edwin layout.
-A layout is a function that takes a list of buffers, and arranges them into
+A layout is a function that takes a list of panes, and arranges them into
 a window configuration.")
 
 (defvar edwin-nmaster 1
@@ -32,14 +32,25 @@ a window configuration.")
 (defvar edwin-mfact 0.55
   "The size of the master area in proportion to the stack area.")
 
+(defun edwin-pane (window)
+  "Create pane from WINDOW.
+A pane is Edwin's internal window abstraction, an association list containing
+a buffer and other information."
+  (let ((pane `((buffer . ,(window-buffer window)))))
+    pane))
+
+(defun edwin-restore-pane (pane)
+  "Restore PANE in the selected window."
+  (switch-to-buffer (alist-get 'buffer pane)))
+
 (defun edwin-arrange ()
   "Arrange windows according to Edwin's current layout."
   (interactive)
   (let* ((windows (edwin-window-list))
          (selected-window-index (seq-position windows (selected-window)))
-         (buffers (mapcar #'window-buffer windows)))
+         (panes (mapcar #'edwin-pane windows)))
     (delete-other-windows)
-    (funcall edwin-layout buffers)
+    (funcall edwin-layout panes)
     (select-window (nth selected-window-index
                         (edwin-window-list)))))
 
@@ -57,23 +68,23 @@ Meant to be used as advice :around `display-buffer'."
   "Return a list of windows on FRAME in layout order."
   (window-list frame nil (frame-first-window frame)))
 
-(defun edwin-stack-layout (buffers)
-  "Edwin layout that stacks BUFFERS evenly on top of each other."
+(defun edwin-stack-layout (panes)
+  "Edwin layout that stacks PANES evenly on top of each other."
   (let ((split-height (ceiling (/ (window-height)
-                                  (length buffers)))))
-    (switch-to-buffer (car buffers))
-    (dolist (buffer (cdr buffers))
+                                  (length panes)))))
+    (edwin-restore-pane (car panes))
+    (dolist (pane (cdr panes))
       (select-window
        (split-window nil split-height 'below))
-      (switch-to-buffer buffer))))
+      (edwin-restore-pane pane))))
 
 (defun edwin-mastered (side layout)
   "Add a master area to LAYOUT.
 SIDE has the same meaning as in `split-window', but putting master to the
 right or bottom is not supported."
-  (lambda (buffers)
-    (let ((master (seq-take buffers edwin-nmaster))
-          (stack  (seq-drop buffers edwin-nmaster))
+  (lambda (panes)
+    (let ((master (seq-take panes edwin-nmaster))
+          (stack  (seq-drop panes edwin-nmaster))
           (msize  (ceiling (* -1
                               edwin-mfact
                               (if (memq side '(left right t))
@@ -87,11 +98,11 @@ right or bottom is not supported."
            (split-window (frame-root-window) msize side)))
         (edwin-stack-layout master)))))
 
-(defun edwin-tall-layout (buffers)
-  "Edwin layout with master and stack areas for BUFFERS."
+(defun edwin-tall-layout (panes)
+  "Edwin layout with master and stack areas for PANES."
   (let* ((side (if (< (frame-width) 132) 'above 'left))
          (layout (edwin-mastered side #'edwin-stack-layout)))
-    (funcall layout buffers)))
+    (funcall layout panes)))
 
 (defun edwin-select-next-window ()
   "Move cursor to the next window in cyclic order."
