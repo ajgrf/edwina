@@ -36,12 +36,14 @@ a window configuration.")
   "Create pane from WINDOW.
 A pane is Edwin's internal window abstraction, an association list containing
 a buffer and other information."
-  (let ((pane `((buffer . ,(window-buffer window)))))
+  (let ((pane `((buffer . ,(window-buffer window))
+                (point . ,(window-point window)))))
     pane))
 
 (defun edwin-restore-pane (pane)
   "Restore PANE in the selected window."
-  (switch-to-buffer (alist-get 'buffer pane)))
+  (switch-to-buffer (alist-get 'buffer pane))
+  (set-window-point nil (alist-get 'point pane)))
 
 (defun edwin-arrange ()
   "Arrange windows according to Edwin's current layout."
