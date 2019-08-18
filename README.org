@@ -1,33 +1,33 @@
-#+TITLE: Edwin
+#+TITLE: Edwina
 
-Edwin is a dynamic window manager for Emacs. It automatically arranges your
+Edwina is a dynamic window manager for Emacs. It automatically arranges your
 Emacs panes (called "windows" in Emacs parlance) into predefined layouts,
 [[https://dwm.suckless.org/][dwm]]-style.
 
 * Status
 
-Edwin is new and experimental. While it works very well on the subset
+Edwina is new and experimental. While it works very well on the subset
 of Emacs that I use, you will definitely encounter bugs if you venture
 outside of that. Patches welcome!
 
 * Installation
 
-Copy or clone Edwin somewhere on your system:
+Copy or clone Edwina somewhere on your system:
 
 #+BEGIN_SRC sh
-  git clone https://github.com/ajgrf/edwin ~/.emacs.d/edwin
+  git clone https://github.com/ajgrf/edwina ~/.emacs.d/edwina
 #+END_SRC
 
 Then add its location to =load-path=:
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path
-               (expand-file-name "~/.emacs.d/edwin"))
+               (expand-file-name "~/.emacs.d/edwina"))
 #+END_SRC
 
 * Concepts
 
-Edwin divides the frame into 2 areas, the master area and the stack.
+Edwina divides the frame into 2 areas, the master area and the stack.
 The master area contains the largest window(s), and other windows are
 placed in the stack.
 
@@ -41,7 +41,7 @@ placed in the stack.
 +-----------+---------+
 #+END_EXAMPLE
 
-If the frame is too narrow for 2 columns, Edwin will instead put the
+If the frame is too narrow for 2 columns, Edwina will instead put the
 master area on top:
 
 #+BEGIN_EXAMPLE
@@ -77,7 +77,7 @@ master area on top:
 
 * Scope
 
-Edwin does not provide workspaces or window rules, instead delegating
+Edwina does not provide workspaces or window rules, instead delegating
 such functionality to other plugins and Emacs facilities (like
 [[https://github.com/wasamasa/eyebrowse][eyebrowse]]).
 
