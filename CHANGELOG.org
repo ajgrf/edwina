@@ -1,0 +1,23 @@
+#+TITLE: Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [[https://keepachangelog.com/en/1.0.0/][Keep a Changelog]],
+but in Org markup because Emacs.
+
+* Unreleased
+** Changed
+- Renamed project to Edwina because it conflicted with another Emacs-related
+  [[https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-user/Edwin.html][text editor]]
+  associated with the GNU project.
+
+** Added
+- New command =edwin-clone-window=.
+
+* 0.1.1 - 2019-08-17
+** Fixed
+- Make =package-lint= and =checkdoc= happy with the code.
+
+* 0.1.0 - 2019-08-17
+** Added
+- Initial release of Edwin.
