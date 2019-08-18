@@ -187,9 +187,8 @@ right or bottom is not supported."
 (defun edwina-dec-nmaster ()
   "Decrease the number of windows in the master area."
   (interactive)
-  (setq edwina-nmaster (- edwina-nmaster 1))
-  (when (< edwina-nmaster 0)
-    (setq edwina-nmaster 0))
+  (setq edwina-nmaster (max (- edwina-nmaster 1)
+                            0))
   (edwina-arrange))
 
 (defun edwina-inc-nmaster ()
