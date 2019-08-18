@@ -4,6 +4,7 @@
 ;; URL: https://github.com/ajgrf/edwina
 ;; Version: 0.1.2-pre
 ;; Package-Requires: ((emacs "25"))
+;; Keywords: convenience
 
 ;;; Copyright © 2019 Alex Griffin <a@ajgrf.com>
 ;;;
