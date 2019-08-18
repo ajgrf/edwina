@@ -19,6 +19,7 @@ but in Org markup because Emacs.
 ** Added
 - New command =edwina-clone-window=.
 - New function =edwina-setup-dwm-keys= to get the old dwm-like bindings back.
+- Added Emacs Customization group.
 
 * 0.1.1 - 2019-08-17
 ** Fixed

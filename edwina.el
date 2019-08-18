@@ -33,16 +33,35 @@
 
 (require 'seq)
 
+(defgroup edwina nil
+  "A dynamic window manager for Emacs."
+  :group 'convenience
+  :prefix "edwina-")
+
+(defcustom edwina-keymap-prefix (kbd "C-c C-w")
+  "Prefix key for keybindings."
+  :type 'string
+  :group 'edwina)
+
+(defcustom edwina-nmaster 1
+  "The number of windows to put in the Edwina master area."
+  :type 'integer
+  :group 'edwina)
+
+(defcustom edwina-mfact 0.55
+  "The size of the master area in proportion to the stack area."
+  :type 'float
+  :group 'edwina)
+
+(defcustom edwina-narrow-threshold 132
+  "Put master area on top if the frame is narrower than this."
+  :type 'integer
+  :group 'edwina)
+
 (defvar edwina-layout 'edwina-tall-layout
   "The current Edwina layout.
 A layout is a function that takes a list of panes, and arranges them into
 a window configuration.")
-
-(defvar edwina-nmaster 1
-  "The number of windows to put in the Edwina master area.")
-
-(defvar edwina-mfact 0.55
-  "The size of the master area in proportion to the stack area.")
 
 (defvar edwina--window-fields
   '(buffer start hscroll vscroll point prev-buffers)
@@ -139,9 +158,6 @@ right or bottom is not supported."
            (split-window (frame-root-window) msize side)))
         (edwina-stack-layout master)))))
 
-(defvar edwina-narrow-threshold 132
-  "Put master area on top if the frame is narrower than this.")
-
 (defun edwina-tall-layout (panes)
   "Edwina layout with master and stack areas for PANES."
   (let* ((side (if (< (frame-width) edwina-narrow-threshold) 'above 'left))
@@ -224,9 +240,6 @@ right or bottom is not supported."
     (let ((pane (edwina-pane (selected-window))))
       (edwina-delete-window)
       (edwina-arrange (cons pane (edwina-pane-list))))))
-
-(defvar edwina-keymap-prefix (kbd "C-c C-w")
-  "Prefix key for keybindings.")
 
 (defvar edwina-mode-map
   (let ((map (make-sparse-keymap))
