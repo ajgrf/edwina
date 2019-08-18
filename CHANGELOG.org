@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [[https://keepachangelog.com/en/1.0.0/][Keep a Changelog]],
 but in Org markup because Emacs.
 
-* Unreleased
+* 0.2.0 - 2019-08-18
 ** Changed
 - Renamed project to Edwina because it conflicted with another Emacs-related
   [[https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-user/Edwin.html][text editor]]
