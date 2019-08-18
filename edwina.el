@@ -161,14 +161,20 @@ right or bottom is not supported."
 (defun edwina-swap-next-window ()
   "Swap the selected window with the next window."
   (interactive)
-  (window-swap-states (selected-window)
-                      (next-window)))
+  (let ((cur  (edwina-pane (selected-window)))
+        (next (edwina-pane (next-window))))
+    (edwina-restore-pane next)
+    (edwina-select-next-window)
+    (edwina-restore-pane cur)))
 
 (defun edwina-swap-previous-window ()
   "Swap the selected window with the previous window."
   (interactive)
-  (window-swap-states (selected-window)
-                      (previous-window)))
+  (let ((cur  (edwina-pane (selected-window)))
+        (prev (edwina-pane (previous-window))))
+    (edwina-restore-pane prev)
+    (edwina-select-previous-window)
+    (edwina-restore-pane cur)))
 
 (defun edwina-dec-mfact ()
   "Decrease the size of the master area."
