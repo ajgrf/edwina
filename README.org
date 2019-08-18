@@ -71,6 +71,9 @@ By default these keys are prefixed with =C-c C-w=. Customize
 | =c=, =C-c=         | Clone current window                 |
 |--------------------+--------------------------------------|
 
+See also =(edwina-setup-dwm-keys)= to set up alternative dwm-like key
+bindings, although these conflict with default Emacs bindings.
+
 * Scope
 
 Edwina does not provide workspaces or window rules, instead delegating

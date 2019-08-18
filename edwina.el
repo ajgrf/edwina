@@ -267,6 +267,28 @@ right or bottom is not supported."
   `((edwina-mode . ,edwina-mode-map))
   "Add to `emulation-mode-map-alists' to give bindings higher precedence.")
 
+(defun edwina-setup-dwm-keys ()
+  "Set up dwm-like key bindings for Edinwa.
+These conflict with default Emacs bindings."
+  (let ((map edwina-mode-map))
+    (define-key map (kbd "M-r") 'edwina-arrange)
+    (define-key map (kbd "M-j") 'edwina-select-next-window)
+    (define-key map (kbd "M-k") 'edwina-select-previous-window)
+    (define-key map (kbd "M-S-j") 'edwina-swap-next-window)
+    (define-key map (kbd "M-J") 'edwina-swap-next-window)
+    (define-key map (kbd "M-S-k") 'edwina-swap-previous-window)
+    (define-key map (kbd "M-K") 'edwina-swap-previous-window)
+    (define-key map (kbd "M-h") 'edwina-dec-mfact)
+    (define-key map (kbd "M-l") 'edwina-inc-mfact)
+    (define-key map (kbd "M-d") 'edwina-dec-nmaster)
+    (define-key map (kbd "M-i") 'edwina-inc-nmaster)
+    (define-key map (kbd "M-S-c") 'edwina-delete-window)
+    (define-key map (kbd "M-C") 'edwina-delete-window)
+    (define-key map (kbd "<M-RET>") 'edwina-zoom)
+    (define-key map (kbd "<M-return>") 'edwina-zoom)
+    (define-key map (kbd "<M-S-RET>") 'edwina-clone-window)
+    (define-key map (kbd "<M-S-return>") 'edwina-clone-window)))
+
 (defun edwina--init ()
   "Initialize command `edwina-mode'."
   (add-to-list 'emulation-mode-map-alists
