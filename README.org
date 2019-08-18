@@ -25,36 +25,29 @@ Then add its location to =load-path=:
                (expand-file-name "~/.emacs.d/edwina"))
 #+END_SRC
 
-* Concepts
+* Usage
 
 Edwina divides the frame into 2 areas, the master area and the stack.
 The master area contains the largest window(s), and other windows are
-placed in the stack.
+placed in the stack. Edwina tries to place the master area to the
+side, but if the frame is too narrow for 2 columns it will put it on
+top instead.
 
 #+BEGIN_EXAMPLE
-+-----------+---------+
-|           |    1    |
-|           +---------+
-|  master   |    2    |
-|           +---------+
-|           |    3    |
-+-----------+---------+
++-----------+---------+     +-----------+
+|           |    1    |     |           |
+|           +---------+     |  master   |
+|  master   |    2    |     |           |
+|           +---------+     +-----------+
+|           |    3    |     |     1     |
++-----------+---------+     +-----------+
 #+END_EXAMPLE
 
-If the frame is too narrow for 2 columns, Edwina will instead put the
-master area on top:
-
-#+BEGIN_EXAMPLE
-+------------+
-|            |
-|  master    |
-|            |
-+------------+
-|     1      |
-+------------+
-|     2      |
-+------------+
-#+END_EXAMPLE
+Edwina arranges windows according to just a few parameters: the size
+of the master area, the number of windows in master, the order of
+windows, and the current layout. By operating on these parameters
+instead of manually manipulating individual windows, you can greatly
+reduce the effort required to resize and reposition windows.
 
 * Key Bindings
 
