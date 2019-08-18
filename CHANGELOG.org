@@ -10,9 +10,15 @@ but in Org markup because Emacs.
 - Renamed project to Edwina because it conflicted with another Emacs-related
   [[https://www.gnu.org/software/mit-scheme/documentation/mit-scheme-user/Edwin.html][text editor]]
   associated with the GNU project.
+- Changed key bindings to not conflict with Emacs defaults.
+
+** Deprecated
+- Loading =edwin-mode= still works but will complain loudly. Compatibility will
+  be removed in the next release.
 
 ** Added
-- New command =edwin-clone-window=.
+- New command =edwina-clone-window=.
+- New function =edwina-setup-dwm-keys= to get the old dwm-like bindings back.
 
 * 0.1.1 - 2019-08-17
 ** Fixed
