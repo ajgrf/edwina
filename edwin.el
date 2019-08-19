@@ -2,7 +2,7 @@
 
 ;; Author: Alex Griffin <a@ajgrf.com>
 ;; URL: https://github.com/ajgrf/edwin
-;; Version: 0.2.0
+;; Version: 0.3.0-pre
 ;; Package-Requires: ((emacs "25"))
 
 ;;; Copyright © 2019 Alex Griffin <a@ajgrf.com>
