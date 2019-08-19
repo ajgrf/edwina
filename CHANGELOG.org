@@ -6,6 +6,9 @@ The format is based on [[https://keepachangelog.com/en/1.0.0/][Keep a Changelog]
 but in Org markup because Emacs.
 
 * Unreleased
+** Removed
+- Removed bindings =C-c C-w 5= and =C-c C-w 6=.
+
 * 0.2.0 - 2019-08-18
 ** Changed
 - Renamed project to Edwina because it conflicted with another Emacs-related

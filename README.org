@@ -54,22 +54,22 @@ reduce the effort required to resize and reposition windows.
 By default these keys are prefixed with =C-c C-w=. Customize
 =edwina-keymap-prefix= to change the prefix.
 
-|--------------------+--------------------------------------|
-| Binding            | Action                               |
-|--------------------+--------------------------------------|
-| =r=, =C-r=         | Arrange windows                      |
-| =n=, =C-n=, =SPC=  | Move to next window                  |
-| =p=, =C-p=         | Move to previous window              |
-| =N=, =C-S-n=       | Swap places with the next window     |
-| =P=, =C-S-p=       | Swap places with the previous window |
-| =%=, =5=, ={=, =[= | Decrease the size of the master area |
-| =^=, =6=, =}=, =]= | Increase the size of the master area |
-| =d=, =C-d=         | Decrease number of windows in master |
-| =i=                | Increase number of windows in master |
-| =k=, =C-k=         | Delete window                        |
-| =RET=              | Cycle window to/from master area     |
-| =c=, =C-c=         | Clone current window                 |
-|--------------------+--------------------------------------|
+|-------------------+--------------------------------------|
+| Binding           | Action                               |
+|-------------------+--------------------------------------|
+| =r=, =C-r=        | Arrange windows                      |
+| =n=, =C-n=, =SPC= | Move to next window                  |
+| =p=, =C-p=        | Move to previous window              |
+| =N=, =C-S-n=      | Swap places with the next window     |
+| =P=, =C-S-p=      | Swap places with the previous window |
+| =%=, ={=, =[=     | Decrease the size of the master area |
+| =^=, =}=, =]=     | Increase the size of the master area |
+| =d=, =C-d=        | Decrease number of windows in master |
+| =i=               | Increase number of windows in master |
+| =k=, =C-k=        | Delete window                        |
+| =RET=             | Cycle window to/from master area     |
+| =c=, =C-c=        | Clone current window                 |
+|-------------------+--------------------------------------|
 
 See also =(edwina-setup-dwm-keys)= to set up alternative dwm-like key
 bindings, although these conflict with default Emacs bindings.
