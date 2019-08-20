@@ -12,6 +12,13 @@ outside of that. Patches welcome!
 
 * Installation
 
+** MELPA
+
+After [[https://melpa.org/#/getting-started][enabling installation]] of MELPA
+packages, install =edwina= with =M-x package-install=.
+
+** Manual
+
 Copy or clone Edwina somewhere on your system:
 
 #+BEGIN_SRC sh
@@ -23,6 +30,19 @@ Then add its location to =load-path=:
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path
                (expand-file-name "~/.emacs.d/edwina"))
+#+END_SRC
+
+** use-package
+
+Here's a complete example configuration with =use-package= for reference:
+
+#+BEGIN_SRC emacs-lisp
+  (use-package edwina
+    :ensure t
+    :config
+    (setq display-buffer-base-action '(display-buffer-below-selected))
+    (edwina-setup-dwm-keys)
+    (edwina-mode 1))
 #+END_SRC
 
 * Usage
