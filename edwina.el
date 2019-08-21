@@ -246,7 +246,9 @@ right or bottom is not supported."
   "Delete WINDOW."
   (interactive)
   (let ((ignore-window-parameters t))
-    (delete-window window)
+    (delete-window window))
+  (when (or (null window)
+            (and (boundp 'edwina-mode) edwina-mode))
     (edwina-arrange)))
 
 (defun edwina-zoom ()
