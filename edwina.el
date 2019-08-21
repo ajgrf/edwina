@@ -44,6 +44,11 @@
   :type 'string
   :group 'edwina)
 
+(defcustom edwina-mode-line-format "%s "
+  "String used for displaying the current layout in mode line."
+  :type 'string
+  :group 'edwina)
+
 (defcustom edwina-nmaster 1
   "The number of windows to put in the Edwina master area."
   :type 'integer
@@ -164,6 +169,17 @@ right or bottom is not supported."
   (let* ((side (if (< (frame-width) edwina-narrow-threshold) 'above 'left))
          (layout (edwina--mastered side #'edwina-stack-layout)))
     (funcall layout panes)))
+
+(defun edwina-layout-name (layout)
+  "Return the user-facing name of LAYOUT."
+  (capitalize
+   (replace-regexp-in-string "\\(edwina-\\|-layout\\)" ""
+                             (symbol-name layout))))
+
+(defun edwina-mode-line-indicator ()
+  "Return a string to display in the mode line."
+  (format edwina-mode-line-format
+          (edwina-layout-name edwina-layout)))
 
 (defun edwina-select-next-window ()
   "Move cursor to the next window in cyclic order."
@@ -306,6 +322,9 @@ These conflict with default Emacs bindings."
   (add-to-list 'emulation-mode-map-alists
                'edwina-mode-map-alist)
   (advice-add #'display-buffer :around #'edwina--display-buffer)
+  (unless (assoc 'edwina-mode mode-line-misc-info)
+    (push '(edwina-mode (:eval (edwina-mode-line-indicator)))
+          (cdr (last mode-line-misc-info))))
   (edwina-arrange))
 
 (defun edwina--clean-up ()
@@ -322,7 +341,6 @@ the mode if ARG is omitted or nil, and toggle it if ARG is `toggle'.
 Edwina mode is a global minor mode that provides dwm-like dynamic
 window management for Emacs windows."
   :global t
-  :lighter " edwina"
   (if edwina-mode
       (edwina--init)
     (edwina--clean-up)))

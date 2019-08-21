@@ -6,6 +6,12 @@ The format is based on [[https://keepachangelog.com/en/1.0.0/][Keep a Changelog]
 but in Org markup because Emacs.
 
 * Unreleased
+** Changed
+- Show layout name in mode line instead of nondescript "edwina".
+
+** Added
+- New option =edwina-mode-line-format=.
+
 ** Removed
 - Removed bindings =C-c C-w 5= and =C-c C-w 6=.
 
