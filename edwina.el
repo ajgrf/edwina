@@ -146,27 +146,25 @@ Meant to be used as advice :around `display-buffer'."
 
 (defun edwina--mastered (side layout)
   "Add a master area to LAYOUT.
-SIDE has the same meaning as in `split-window', but putting master to the
-right or bottom is not supported."
+SIDE is passed to `split-window' to position the stack area."
   (lambda (panes)
     (let ((master (seq-take panes edwina-nmaster))
           (stack  (seq-drop panes edwina-nmaster))
-          (msize  (ceiling (* -1
-                              edwina-mfact
+          (msize  (ceiling (* edwina-mfact
                               (if (memq side '(left right t))
                                   (frame-width)
                                 (frame-height))))))
-      (when stack
-        (funcall layout stack))
-      (when master
-        (when stack
-          (select-window
-           (split-window (frame-root-window) msize side)))
-        (edwina-stack-layout master)))))
+      (cond ((and master stack)
+             (split-window nil msize side)
+             (edwina-stack-layout master)
+             (select-window (next-window))
+             (funcall layout stack))
+            (master (edwina-stack-layout master))
+            (stack  (funcall layout stack))))))
 
 (defun edwina-tall-layout (panes)
   "Edwina layout with master and stack areas for PANES."
-  (let* ((side (if (< (frame-width) edwina-narrow-threshold) 'above 'left))
+  (let* ((side (if (< (frame-width) edwina-narrow-threshold) 'below 'right))
          (layout (edwina--mastered side #'edwina-stack-layout)))
     (funcall layout panes)))
 
