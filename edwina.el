@@ -317,6 +317,29 @@ These conflict with default Emacs bindings."
     (define-key map (kbd "<M-S-RET>") 'edwina-clone-window)
     (define-key map (kbd "<M-S-return>") 'edwina-clone-window)))
 
+(defun edwina-setup-dwm-super-keys ()
+  "Set up dwm-like key bindings for Edinwa.
+These use the super key thus don't conflict with emacs
+keybindings, but may not work with some window managers."
+  (let ((map edwina-mode-map))
+    (define-key map (kbd "s-r") 'edwina-arrange)
+    (define-key map (kbd "s-j") 'edwina-select-next-window)
+    (define-key map (kbd "s-k") 'edwina-select-previous-window)
+    (define-key map (kbd "s-S-j") 'edwina-swap-next-window)
+    (define-key map (kbd "s-J") 'edwina-swap-next-window)
+    (define-key map (kbd "s-S-k") 'edwina-swap-previous-window)
+    (define-key map (kbd "s-K") 'edwina-swap-previous-window)
+    (define-key map (kbd "s-h") 'edwina-dec-mfact)
+    (define-key map (kbd "s-l") 'edwina-inc-mfact)
+    (define-key map (kbd "s-d") 'edwina-dec-nmaster)
+    (define-key map (kbd "s-i") 'edwina-inc-nmaster)
+    (define-key map (kbd "s-S-c") 'edwina-delete-window)
+    (define-key map (kbd "s-C") 'edwina-delete-window)
+    (define-key map (kbd "<s-RET>") 'edwina-zoom)
+    (define-key map (kbd "<s-return>") 'edwina-zoom)
+    (define-key map (kbd "<s-S-RET>") 'edwina-clone-window)
+    (define-key map (kbd "<s-S-return>") 'edwina-clone-window)))
+
 (defun edwina--init ()
   "Initialize command `edwina-mode'."
   (add-to-list 'emulation-mode-map-alists
