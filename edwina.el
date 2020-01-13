@@ -330,7 +330,7 @@ use meta."
 	   "H-")
 	  (t "M-"))))
     (dolist (key-and-function edwina-dwm-key-alist)
-      (message "%s: %s"
+      (define-key edwina-mode-map
 	(if (cddr key-and-function)
 	    (kbd (format "<%s%s>"
 			 mod-prefix
