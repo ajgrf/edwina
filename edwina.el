@@ -296,23 +296,25 @@ SIDE is passed to `split-window' to position the stack area."
   "Add to `emulation-mode-map-alists' to give bindings higher precedence.")
 
 (defvar edwina-dwm-key-alist
-  '(("r" 'edwina-arrange)
-    ("j" 'edwina-select-next-window)
-    ("k" 'edwina-select-previous-window)
-    ("S-j" 'edwina-swap-next-window)
-    ("J" 'edwina-swap-next-window)
-    ("S-k" 'edwina-swap-previous-window)
-    ("K" 'edwina-swap-previous-window)
-    ("h" 'edwina-dec-mfact)
-    ("l" 'edwina-inc-mfact)
-    ("d" 'edwina-dec-nmaster)
-    ("i" 'edwina-inc-nmaster)
-    ("S-c" 'edwina-delete-window)
-    ("C" 'edwina-delete-window)
-    ("RET" 'edwina-zoom)
-    ("return" 'edwina-zoom)
-    ("S-RET" 'edwina-clone-window)
-    ("S-return" 'edwina-clone-window))
+  '(("r" edwina-arrange)
+    ("j" edwina-select-next-window)
+    ("k" edwina-select-previous-window)
+    ("S-j" edwina-swap-next-window)
+    ("J" edwina-swap-next-window)
+    ("S-k" edwina-swap-previous-window)
+    ("K" edwina-swap-previous-window)
+    ("h" edwina-dec-mfact)
+    ("l" edwina-inc-mfact)
+    ("d" edwina-dec-nmaster)
+    ("i" edwina-inc-nmaster)
+    ("S-c" edwina-delete-window)
+    ("C" edwina-delete-window)
+
+    ("RET" edwina-zoom t)
+    ("return" edwina-zoom t)
+    ("S-RET" edwina-clone-window t)
+    ("S-return" edwina-clone-window t))
+
   "A list of keys to bind with a prefix. Used in
   `edwina-setup-dwm-keys'")
 
@@ -328,10 +330,14 @@ use meta."
 	   "H-")
 	  (t "M-"))))
     (dolist (key-and-function edwina-dwm-key-alist)
-      (define-key edwina-mode-map
-	(kbd (concat
-	      mod-prefix
-	      (car key-and-function)))
+      (message "%s: %s"
+	(if (cddr key-and-function)
+	    (kbd (format "<%s%s>"
+			 mod-prefix
+			 (car key-and-function)))
+	  (kbd (format "%s%s"
+		       mod-prefix
+		       (car key-and-function))))
 	(cadr key-and-function)))))
 
 (defun edwina--init ()
