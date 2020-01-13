@@ -295,27 +295,50 @@ SIDE is passed to `split-window' to position the stack area."
   `((edwina-mode . ,edwina-mode-map))
   "Add to `emulation-mode-map-alists' to give bindings higher precedence.")
 
-(defun edwina-setup-dwm-keys ()
-  "Set up dwm-like key bindings for Edinwa.
-These conflict with default Emacs bindings."
-  (let ((map edwina-mode-map))
-    (define-key map (kbd "M-r") 'edwina-arrange)
-    (define-key map (kbd "M-j") 'edwina-select-next-window)
-    (define-key map (kbd "M-k") 'edwina-select-previous-window)
-    (define-key map (kbd "M-S-j") 'edwina-swap-next-window)
-    (define-key map (kbd "M-J") 'edwina-swap-next-window)
-    (define-key map (kbd "M-S-k") 'edwina-swap-previous-window)
-    (define-key map (kbd "M-K") 'edwina-swap-previous-window)
-    (define-key map (kbd "M-h") 'edwina-dec-mfact)
-    (define-key map (kbd "M-l") 'edwina-inc-mfact)
-    (define-key map (kbd "M-d") 'edwina-dec-nmaster)
-    (define-key map (kbd "M-i") 'edwina-inc-nmaster)
-    (define-key map (kbd "M-S-c") 'edwina-delete-window)
-    (define-key map (kbd "M-C") 'edwina-delete-window)
-    (define-key map (kbd "<M-RET>") 'edwina-zoom)
-    (define-key map (kbd "<M-return>") 'edwina-zoom)
-    (define-key map (kbd "<M-S-RET>") 'edwina-clone-window)
-    (define-key map (kbd "<M-S-return>") 'edwina-clone-window)))
+(defvar edwina-dwm-key-alist
+  '(("r" edwina-arrange)
+    ("j" edwina-select-next-window)
+    ("k" edwina-select-previous-window)
+    ("S-j" edwina-swap-next-window)
+    ("J" edwina-swap-next-window)
+    ("S-k" edwina-swap-previous-window)
+    ("K" edwina-swap-previous-window)
+    ("h" edwina-dec-mfact)
+    ("l" edwina-inc-mfact)
+    ("d" edwina-dec-nmaster)
+    ("i" edwina-inc-nmaster)
+    ("S-c" edwina-delete-window)
+    ("C" edwina-delete-window)
+
+    ("RET" edwina-zoom t)
+    ("return" edwina-zoom t)
+    ("S-RET" edwina-clone-window t)
+    ("S-return" edwina-clone-window t))
+
+  "A list of keys to bind with a prefix. Used in
+  `edwina-setup-dwm-keys'")
+
+(defun edwina-setup-dwm-keys (&optional modifier)
+  "Set up dwm-like keybindings. MODIFIER is the mod-key to use,
+and must be a either \'super or \'hyper. With no argument,
+use meta."
+  (let ((mod-prefix
+	 (cond
+	  ((equal 'super modifier)
+	   "s-")
+	  ((equal 'hyper modifier)
+	   "H-")
+	  (t "M-"))))
+    (dolist (key-and-function edwina-dwm-key-alist)
+      (define-key edwina-mode-map
+	(if (cddr key-and-function)
+	    (kbd (format "<%s%s>"
+			 mod-prefix
+			 (car key-and-function)))
+	  (kbd (format "%s%s"
+		       mod-prefix
+		       (car key-and-function))))
+	(cadr key-and-function)))))
 
 (defun edwina--init ()
   "Initialize command `edwina-mode'."

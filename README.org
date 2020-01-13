@@ -92,7 +92,7 @@ By default these keys are prefixed with =C-c C-w=. Customize
 |-------------------+--------------------------------------|
 
 See also =(edwina-setup-dwm-keys)= to set up alternative dwm-like key
-bindings, although these conflict with default Emacs bindings.
+bindings.
 
 * Scope
 
