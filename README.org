@@ -91,10 +91,8 @@ By default these keys are prefixed with =C-c C-w=. Customize
 | =c=, =C-c=        | Clone current window                 |
 |-------------------+--------------------------------------|
 
-See also =(edwina-setup-dwm-keys)= and =(edwina-setup-dwm-super-keys)=
-to set up alternative dwm-like key bindings. The first uses Meta as a
-prefix, so it conflicts with emacs' keybindings and the second uses
-the Super key which won't work with some window managers.
+See also =(edwina-setup-dwm-keys)= to set up alternative dwm-like key
+bindings.
 
 * Scope
 
