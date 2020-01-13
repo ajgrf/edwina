@@ -106,6 +106,3 @@ then defining any exceptions in ~display-buffer-alist~.
 #+BEGIN_SRC emacs-lisp
   (setq display-buffer-base-action '(display-buffer-below-selected))
 #+END_SRC
-
-
-
