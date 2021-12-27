@@ -144,6 +144,16 @@ Meant to be used as advice :around `display-buffer'."
        (split-window nil split-height 'below))
       (edwina-restore-pane pane))))
 
+(defun edwina-wide-layout (panes)
+  "Edwina layout that places PANES alongside of each other."
+  (let ((split-width (ceiling (/ (window-width)
+                                 (length panes)))))
+    (edwina-restore-pane (car panes))
+    (dolist (pane (cdr panes))
+      (select-window
+       (split-window nil split-width 'right))
+      (edwina-restore-pane pane))))
+
 (defun edwina--mastered (side layout)
   "Add a master area to LAYOUT.
 SIDE is passed to `split-window' to position the stack area."
@@ -156,10 +166,10 @@ SIDE is passed to `split-window' to position the stack area."
                                 (frame-height))))))
       (cond ((and master stack)
              (split-window nil msize side)
-             (edwina-stack-layout master)
+             (edwina-wide-layout master)
              (select-window (next-window))
              (funcall layout stack))
-            (master (edwina-stack-layout master))
+            (master (edwina-wide-layout master))
             (stack  (funcall layout stack))))))
 
 (defun edwina-tall-layout (panes)
