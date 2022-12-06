@@ -22,7 +22,7 @@ packages, install =edwina= with =M-x package-install=.
 Copy or clone Edwina somewhere on your system:
 
 #+BEGIN_SRC sh
-  git clone https://github.com/ajgrf/edwina ~/.emacs.d/edwina
+  git clone https://gitlab.com/ajgrf/edwina ~/.emacs.d/edwina
 #+END_SRC
 
 Then add its location to =load-path=:

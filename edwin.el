@@ -1,7 +1,7 @@
 ;;; edwin.el --- Dynamic window manager -*- lexical-binding: t -*-
 
 ;; Author: Alex Griffin <a@ajgrf.com>
-;; URL: https://github.com/ajgrf/edwin
+;; URL: https://gitlab.com/ajgrf/edwina
 ;; Version: 0.3.0-pre
 ;; Package-Requires: ((emacs "25"))
 
