@@ -122,11 +122,11 @@ a buffer and other information."
 (defun edwina-arrange (&optional panes)
   "Arrange PANES according to Edwina's current layout."
   (interactive)
-  (let* ((panes (or panes (edwina-pane-list))))
-    (select-window
-     (edwina--respective-window (selected-window)
-       (delete-other-windows)
-       (funcall edwina-layout panes)))))
+  (let* ((panes (or panes (edwina-pane-list)))
+         (pane (edwina--respective-window (get-lru-window))))
+    (select-window pane)
+    (delete-other-windows pane)
+    (funcall edwina-layout panes)))
 
 (defun edwina--display-buffer (display-buffer &rest args)
   "Apply DISPLAY-BUFFER to ARGS and arrange windows.
